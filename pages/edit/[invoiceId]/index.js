@@ -1,26 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
 
-import { toast } from "react-toastify";
-
-
-const AddNew = () => {
+const EditItem = () => {
   const router = useRouter();
   const [items, setItems] = useState([]);
-
-  const senderStreet = useRef("");
-  const senderCity = useRef("");
-  const senderPostalCode = useRef("");
-  const senderCountry = useRef("");
-  const clientName = useRef("");
-  const clientEmail = useRef("");
-  const clientStreet = useRef("");
-  const clientCity = useRef("");
-  const clientPostalCode = useRef("");
-  const clientCountry = useRef("");
-  const description = useRef("");
-  const createdAt = useRef("");
-  const paymentTerms = useRef("");
 
   // add products items
 
@@ -46,51 +29,11 @@ const AddNew = () => {
     setItems(inputData);
   };
 
-  // total amount of all product
-  const totalAmount = items.reduce((acc, curr) => acc + curr.total, 0);
-
-  // submit data to db
-
-  const createInvoice = async (status) => {
-    try {
-      const res = await fetch("/api/add-new", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          senderStreet: senderStreet.current.value,
-          senderCity: senderCity.current.value,
-          senderPostalCode: senderPostalCode.current.value,
-          senderCountry: senderCountry.current.value,
-          clientName: clientName.current.value,
-          clientEmail: clientEmail.current.value,
-          clientStreet: clientStreet.current.value,
-          clientCity: clientCity.current.value,
-          clientPostalCode: clientPostalCode.current.value,
-          clientCountry: clientCountry.current.value,
-          description: description.current.value,
-          createdAt: createdAt.current.value,
-          paymentDue: createdAt.current.value,
-          paymentTerms: paymentTerms.current.value,
-          status: status,
-          items: items,
-          total: totalAmount,
-        }),
-      });
-      const data = await res.json()
-      router.push('/')
-      toast.success(data.message)
-    } catch (error) {
-      toast.error('Une erreur est survenue!')
-    }
-  };
-
   return (
     <div className="main__container">
       <div className="new__invoice">
         <div className="new__invoice-header">
-          <h3>Nouvelle Facture</h3>
+          <h3>Modifier #RT5840</h3>
         </div>
         {/* new invoice body */}
 
@@ -100,23 +43,23 @@ const AddNew = () => {
             <p className="bill__title">Facture de</p>
             <div className="form__group">
               <p>Adresse</p>
-              <input type="text" ref={senderStreet} />
+              <input type="text" />
             </div>
 
             <div className="form__group inline__form-group">
               <div>
                 <p>Ville</p>
-                <input type="text" ref={senderCity} />
+                <input type="text" />
               </div>
 
               <div>
                 <p>Code Postal</p>
-                <input type="text" ref={senderPostalCode} />
+                <input type="text" />
               </div>
 
               <div>
                 <p>Pays</p>
-                <input type="text" ref={senderCountry} />
+                <input type="text" />
               </div>
             </div>
           </div>
@@ -127,51 +70,51 @@ const AddNew = () => {
             <p className="bill__title">Facture pour</p>
             <div className="form__group">
               <p>Nom du client</p>
-              <input type="text" ref={clientName} />
+              <input type="text" />
             </div>
 
             <div className="form__group">
               <p>Client Email</p>
-              <input type="email" ref={clientEmail} />
+              <input type="email" />
             </div>
 
             <div className="form__group">
               <p>Adresse</p>
-              <input type="text" ref={clientStreet} />
+              <input type="text" />
             </div>
 
             <div className="form__group inline__form-group">
               <div>
                 <p>Ville</p>
-                <input type="text" ref={clientCity} />
+                <input type="text" />
               </div>
 
               <div>
                 <p>Code Postal</p>
-                <input type="text" ref={clientPostalCode} />
+                <input type="text" />
               </div>
 
               <div>
                 <p>Pays</p>
-                <input type="text" ref={clientCountry} />
+                <input type="text" />
               </div>
             </div>
 
             <div className="form__group inline__form-group">
               <div className="inline__group">
                 <p>Date de Facture</p>
-                <input type="date" ref={createdAt} />
+                <input type="date" />
               </div>
 
               <div className="inline__group">
                 <p>Modalités de Paiement</p>
-                <input type="text" ref={paymentTerms} />
+                <input type="text" />
               </div>
             </div>
 
             <div className="form__group">
               <p>Description</p>
-              <input type="text" ref={description} />
+              <input type="text" />
             </div>
           </div>
           {/* invoice product items */}
@@ -226,16 +169,14 @@ const AddNew = () => {
             Ajouter un Item
           </button>
 
-          <div className="new__invoice__btns">
-            <button className="edit__btn" onClick={() => router.push("/")}>
-              Annuler
-            </button>
+          <div className="new__invoice__btns" style={{justifyContent:'end'}}>
+
             <div>
-              <button className="draft__btn" onClick={() => createInvoice('draft')}>
-                Enregistrer Comme Brouillon
+              <button className="draft__btn" onClick={`/invoices/id`}>
+                Annuler
               </button>
 
-              <button className="mark__as-btn" onClick={() => createInvoice('En attente')}>Sauvegarder & envoyee</button>
+              <button className="mark__as-btn">Sauvegarder </button>
             </div>
           </div>
         </div>
@@ -244,4 +185,4 @@ const AddNew = () => {
   );
 };
 
-export default AddNew;
+export default EditItem;

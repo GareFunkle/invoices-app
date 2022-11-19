@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { MongoClient } from "mongodb";
 
-export default function Home() {
+export default function Home(props) {
   const router = useRouter();
+  const { data } = props;
 
   const navigatePage = () => router.push("/add-new");
 
@@ -11,7 +13,7 @@ export default function Home() {
       <div className="invoice__header">
         <div className="invoice__header-logo">
           <h3>Factures</h3>
-          <p>7 factures au total</p>
+          <p>{data.length} factures au total</p>
         </div>
 
         <button className="btn" onClick={navigatePage}>
@@ -21,30 +23,71 @@ export default function Home() {
 
       <div className="invoice__container">
         {/*=====Invoice item=====*/}
-        <Link href={`/invoices/id`} passRef>
-          <div className="invoice__item">
-            <div>
-              <h5 className="invoice__id">RT59F0</h5>
-            </div>
+        {data?.map((invoice) => (
+          <Link href={`/invoices/${invoice.id}`} passRef key={invoice.id}>
+            <div className="invoice__item">
+              <div>
+                <h5 className="invoice__id">
+                  {invoice.id.substr(0, 6).toUpperCase()}
+                </h5>
+              </div>
 
-            <div>
-              <h6 className="invoice__client">Jhon Doe</h6>
-            </div>
+              <div>
+                <h6 className="invoice__client">{invoice.clientName}</h6>
+              </div>
 
-            <div>
-              <p className="invoice_created">29-07-2022</p>
-            </div>
+              <div>
+                <p className="invoice_created">{invoice.createdAt}</p>
+              </div>
 
-            <div>
-              <h3 className="invoice__total">$567</h3>
-            </div>
+              <div>
+                <h3 className="invoice__total">{invoice.total} €</h3>
+              </div>
 
-            <div>
-              <button className="pending__status">en attente</button>
+              <div>
+                <button
+                  className={`${
+                    invoice.status === "Payer"
+                      ? "paid__status"
+                      : invoice.status === "En attente"
+                      ? "pending__status"
+                      : "draft__status"
+                  }`}
+                >
+                  {invoice.status}
+                </button>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        ))}
       </div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://20100:loveangie02@cluster0.3znwwtw.mongodb.net/invoices2?retryWrites=true&w=majority",
+    { useNewUrlParser: true }
+  );
+
+  const db = client.db();
+  const collection = db.collection("allInvoices");
+
+  const invoices = await collection.find({}).toArray();
+
+  return {
+    props: {
+      data: invoices.map((invoice) => {
+        return {
+          id: invoice._id.toString(),
+          clientName: invoice.clientName,
+          createdAt: invoice.createdAt,
+          total: invoice.total,
+          status: invoice.status,
+        };
+      }),
+    },
+    revalidate: 1,
+  };
 }

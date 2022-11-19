@@ -306,7 +306,55 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+}
+
+.inline__group {
+    width: 48%;
+}
+
+.new__invoice-body {
+    padding-bottom: 40px;
+}
+
+.bill__title {
+    margin-bottom: 20px;
+}
+
+.bill__to {
+    margin-top: 50px;
+}
+
+.invoice__items {
+    margin-top: 70px;
+}
+
+.invoice__items h3 {
+    margin-bottom: 30px;
+}
+
+.add__item-btn {
+    width: 100%;
+    background: var(--secondary-color);
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: none;
+    outline: none; 
+    color: #fff;
+    margin-top: 50px; 
+    cursor: pointer;
+}
+
+.draft__btn {
+    background: #1f2c3f;
+    color: #fff;
+    margin-right: 30px;
+    width: 150px !important;
+}
+
+.new__invoice__btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 100px;
 }
 
 /* add new invoice style end */

@@ -1,10 +1,10 @@
-import React from "react";
-import { useRouter } from "next/router";
+import React from 'react'
+import { useRouter } from 'next/router'
 
 const InvoiceDetails = () => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const goBack = () => router.push("/");
+  const goBack = () => router.push('/')
 
   return (
     <div className="main__container">
@@ -37,10 +37,10 @@ const InvoiceDetails = () => {
             <p>Re-branding</p>
           </div>
           <div>
-            <p>Block - B, Road - 41</p>
-            <p>Sylhet</p>
-            <p>SYL 3108</p>
-            <p>Bangladesh</p>
+            <p>99 Boulevard Carnot</p>
+            <p>06400</p>
+            <p>Cannes</p>
+            <p>France</p>
           </div>
         </div>
 
@@ -52,24 +52,24 @@ const InvoiceDetails = () => {
               <h4>17-11-2022</h4>
             </div>
             <div>
-              <p className="invoice__payment">Paiement Dû</p>
+              <p className="invoice__payment">Payer le</p>
               <h4>17-11-2022</h4>
             </div>
           </div>
 
           {/* invoice client adress */}
           <div className="invoice__client-address">
-            <p>Bill to </p>
+            <p>Facture pour</p>
             <h4>Vincent Durret</h4>
             <div>
-              <p>Block - B, Road - 41</p>
-              <p>Sylhet</p>
-              <p>SYL 3108</p>
-              <p>Bangladesh</p>
+              <p>99 Boulevard Carnot</p>
+              <p>06400</p>
+              <p>Cannes</p>
+              <p>France</p>
             </div>
           </div>
           <div>
-            <p>Send to</p>
+            <p>Envoyée à</p>
             <h4>dev.gmail.com</h4>
           </div>
         </div>
@@ -104,12 +104,12 @@ const InvoiceDetails = () => {
         </div>
         {/*  grand total  */}
         <div className="grand__total">
-            <h5>Total</h5>
-            <h2>450$</h2>
+          <h5>Total</h5>
+          <h2>450$</h2>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InvoiceDetails;
+export default InvoiceDetails

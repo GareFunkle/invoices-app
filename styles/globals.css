@@ -39,6 +39,13 @@ a {
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background: #fff;
+    color: var(--primary-color);
+    transition: background 0.3s ease-in-out;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -145,7 +152,8 @@ p {
 
 .invoice__item:hover {
     border: 1px solid var(--primary-color);
-    transform: scaleY(1.1);
+    transition: border 0.3s;
+    /* transform: scaleY(1.1); */
 }
 
 

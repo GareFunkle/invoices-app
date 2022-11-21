@@ -1,62 +1,61 @@
-import React, { useState, useRef } from "react";
-import { useRouter } from "next/router";
+import React, { useState, useRef } from 'react'
+import { useRouter } from 'next/router'
 
-import { toast } from "react-toastify";
-
+import { toast } from 'react-toastify'
 
 const AddNew = () => {
-  const router = useRouter();
-  const [items, setItems] = useState([]);
+  const router = useRouter()
+  const [items, setItems] = useState([])
 
-  const senderStreet = useRef("");
-  const senderCity = useRef("");
-  const senderPostalCode = useRef("");
-  const senderCountry = useRef("");
-  const clientName = useRef("");
-  const clientEmail = useRef("");
-  const clientStreet = useRef("");
-  const clientCity = useRef("");
-  const clientPostalCode = useRef("");
-  const clientCountry = useRef("");
-  const description = useRef("");
-  const createdAt = useRef("");
-  const paymentTerms = useRef("");
+  const senderStreet = useRef('')
+  const senderCity = useRef('')
+  const senderPostalCode = useRef('')
+  const senderCountry = useRef('')
+  const clientName = useRef('')
+  const clientEmail = useRef('')
+  const clientStreet = useRef('')
+  const clientCity = useRef('')
+  const clientPostalCode = useRef('')
+  const clientCountry = useRef('')
+  const description = useRef('')
+  const createdAt = useRef('')
+  const paymentTerms = useRef('')
 
   // add products items
 
   const addItem = () => {
-    setItems([...items, { name: "", quantity: 0, price: 0, total: 0 }]);
-  };
+    setItems([...items, { name: '', quantity: 0, price: 0, total: 0 }])
+  }
 
   // handler change
 
   const handlerChange = (event, i) => {
-    const { name, value } = event.target;
-    const list = [...items];
-    list[i][name] = value;
-    list[i]["total"] = list[i]["quantity"] * list[i]["price"];
-    setItems(list);
-  };
+    const { name, value } = event.target
+    const list = [...items]
+    list[i][name] = value
+    list[i]['total'] = list[i]['quantity'] * list[i]['price']
+    setItems(list)
+  }
 
   // delete products
 
   const deleteItem = (i) => {
-    const inputData = [...items];
-    inputData.splice(i, 1);
-    setItems(inputData);
-  };
+    const inputData = [...items]
+    inputData.splice(i, 1)
+    setItems(inputData)
+  }
 
   // total amount of all product
-  const totalAmount = items.reduce((acc, curr) => acc + curr.total, 0);
+  const totalAmount = items.reduce((acc, curr) => acc + curr.total, 0)
 
   // submit data to db
 
   const createInvoice = async (status) => {
     try {
-      const res = await fetch("/api/add-new", {
-        method: "POST",
+      const res = await fetch('/api/add-new', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           senderStreet: senderStreet.current.value,
@@ -77,14 +76,14 @@ const AddNew = () => {
           items: items,
           total: totalAmount,
         }),
-      });
+      })
       const data = await res.json()
       router.push('/')
       toast.success(data.message)
     } catch (error) {
       toast.error('Une erreur est survenue!')
     }
-  };
+  }
 
   return (
     <div className="main__container">
@@ -227,21 +226,29 @@ const AddNew = () => {
           </button>
 
           <div className="new__invoice__btns">
-            <button className="edit__btn" onClick={() => router.push("/")}>
+            <button className="edit__btn" onClick={() => router.push('/')}>
               Annuler
             </button>
             <div>
-              <button className="draft__btn" onClick={() => createInvoice('draft')}>
+              <button
+                className="draft__btn"
+                onClick={() => createInvoice('Brouillons')}
+              >
                 Enregistrer Comme Brouillon
               </button>
 
-              <button className="mark__as-btn" onClick={() => createInvoice('En attente')}>Sauvegarder & envoyee</button>
+              <button
+                className="mark__as-btn"
+                onClick={() => createInvoice('En attente')}
+              >
+                Sauvegarder & envoyee
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddNew;
+export default AddNew

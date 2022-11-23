@@ -368,4 +368,10 @@ p {
 /* add new invoice style end */
 
 
+.disable{
+    cursor: none;
+    pointer-events: none;
+    opacity: 50%;
+}
+
 

@@ -24,7 +24,7 @@ export default function Home(props) {
       <div className="invoice__container">
         {/*=====Invoice item=====*/}
         {data?.map((invoice) => (
-          <Link href={`/invoices/${invoice.id}`} passRef key={invoice.id}>
+          <Link href={`/invoices/${invoice.id}`} passref="true" key={invoice.id}>
             <div className="invoice__item">
               <div>
                 <h5 className="invoice__id">
@@ -47,7 +47,7 @@ export default function Home(props) {
               <div>
                 <button
                   className={`${
-                    invoice.status === "Payer"
+                    invoice.status === "Payé"
                       ? "paid__status"
                       : invoice.status === "En attente"
                       ? "pending__status"

@@ -1,12 +1,21 @@
-import React from "react";
-import { useRouter } from "next/router";
-import { MongoClient, ObjectId } from "mongodb";
+import React from 'react'
+import { useRouter } from 'next/router'
+import { MongoClient, ObjectId } from 'mongodb'
 
 const InvoiceDetails = (props) => {
-  const router = useRouter();
-  const { data } = props;
+  const router = useRouter()
+  const { data } = props
 
-  const goBack = () => router.push("/");
+  const goBack = () => router.push('/')
+
+  // update invoice status in db
+
+  const updateStatus = async (invoiceId) => {
+    const res = await fetch(`/api/invoices/${invoiceId}`, {
+      method: "PUT",
+    })
+    const data = await res.json()
+  }
 
   return (
     <div className="main__container">
@@ -19,7 +28,17 @@ const InvoiceDetails = (props) => {
         <div className="details__status">
           <p>Status</p>
 
-          <button className="pending__status">{data.status}</button>
+          <button
+            className={`${
+              data.status === 'payé'
+                ? 'paid__status'
+                : data.status === 'En attente'
+                ? 'pending__status'
+                : 'draft__status'
+            }`}
+          >
+            {data.status}
+          </button>
         </div>
 
         <div className="details__btns">
@@ -32,7 +51,14 @@ const InvoiceDetails = (props) => {
 
           <button className="delete__btn">Supprimer</button>
 
-          <button className="mark__as-btn">Marquer Comme Payé</button>
+          <button
+            onClick={() => updateStatus(data.id)}
+            className={`${
+              data.status === 'payé' || data.status === 'Brouillons' ? 'disable' : ''
+            }  mark__as-btn`}
+          >
+            Marquer Comme Payé
+          </button>
         </div>
       </div>
 
@@ -118,43 +144,43 @@ const InvoiceDetails = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InvoiceDetails;
+export default InvoiceDetails
 
 export async function getStaticPaths() {
   const client = await MongoClient.connect(
-    "mongodb+srv://20100:loveangie02@cluster0.3znwwtw.mongodb.net/invoices2?retryWrites=true&w=majority",
+    'mongodb+srv://20100:loveangie02@cluster0.3znwwtw.mongodb.net/invoices2?retryWrites=true&w=majority',
     { useNewUrlParser: true }
-  );
+  )
 
-  const db = client.db();
-  const collection = db.collection("allInvoices");
+  const db = client.db()
+  const collection = db.collection('allInvoices')
 
-  const invoices = await collection.find({}, { _id: 1 }).toArray();
+  const invoices = await collection.find({}, { _id: 1 }).toArray()
 
   return {
-    fallback: "blocking",
+    fallback: 'blocking',
     paths: invoices.map((invoice) => ({
       params: {
         invoiceId: invoice._id.toString(),
       },
     })),
-  };
+  }
 }
 
 export async function getStaticProps(context) {
-  const { invoiceId } = context.params;
+  const { invoiceId } = context.params
   const client = await MongoClient.connect(
-    "mongodb+srv://20100:loveangie02@cluster0.3znwwtw.mongodb.net/invoices2?retryWrites=true&w=majority",
+    'mongodb+srv://20100:loveangie02@cluster0.3znwwtw.mongodb.net/invoices2?retryWrites=true&w=majority',
     { useNewUrlParser: true }
-  );
+  )
 
-  const db = client.db();
-  const collection = db.collection("allInvoices");
+  const db = client.db()
+  const collection = db.collection('allInvoices')
 
-  const invoice = await collection.findOne({ _id: ObjectId(invoiceId) });
+  const invoice = await collection.findOne({ _id: ObjectId(invoiceId) })
 
   return {
     props: {
@@ -174,5 +200,5 @@ export async function getStaticProps(context) {
       },
     },
     revalidate: 1,
-  };
+  }
 }
